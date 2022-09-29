@@ -1,6 +1,6 @@
 import os
 import importlib
-import Imath
+import imath
 import OpenEXR
 from imageio import imread
 from collections import OrderedDict
@@ -31,7 +31,7 @@ def read_depth(path, div):
         f = OpenEXR.InputFile(path)
         dw = f.header()['dataWindow']
         size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
-        depth = np.frombuffer(f.channel('Y', Imath.PixelType(Imath.PixelType.FLOAT)), np.float32)
+        depth = np.frombuffer(f.channel('Y', imath.PixelType(imath.PixelType.FLOAT)), np.float32)
         depth = depth.reshape(size[1], size[0])
         f.close()
     else:
@@ -45,7 +45,7 @@ def read_h_planes(path):
     f = OpenEXR.InputFile(path)
     dw = f.header()['dataWindow']
     size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
-    h_planes = np.frombuffer(f.channel('Y', Imath.PixelType(Imath.PixelType.FLOAT)), np.float32)
+    h_planes = np.frombuffer(f.channel('Y', imath.PixelType(imath.PixelType.FLOAT)), np.float32)
     h_planes = h_planes.reshape(size[1], size[0])
     f.close()
     return h_planes
@@ -56,7 +56,7 @@ def read_v_planes(path):
     dw = f.header()['dataWindow']
     size = (dw.max.x - dw.min.x + 1, dw.max.y - dw.min.y + 1)
     v_planes = np.stack([
-        np.frombuffer(f.channel(ch, Imath.PixelType(Imath.PixelType.FLOAT)), np.float32)
+        np.frombuffer(f.channel(ch, imath.PixelType(imath.PixelType.FLOAT)), np.float32)
         for ch in 'RGB'
     ], -1)
     v_planes = v_planes.reshape(size[1], size[0], 3)

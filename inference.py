@@ -3,7 +3,7 @@ import glob
 import argparse
 import numpy as np
 from tqdm import tqdm
-from imageio import imread, imwrite
+import imageio
 
 import torch
 import torch.nn as nn
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # Inference on all images
     for path in tqdm(rgb_paths):
         k = os.path.split(path)[1][:-4]
-        rgb_np = imread(path)[..., :3]
+        rgb_np = imageio.v2.imread(path)[..., :3]
 
         with torch.no_grad():
             # Prepare 1,3,H,W input tensor
@@ -65,11 +65,10 @@ if __name__ == '__main__':
         # Dump results
         for name, v in infer_dict.items():
             if name == 'h_planes':
-                imwrite(os.path.join(args.outdir, k + '.h_planes.exr'), v)
+                imageio.v2.imwrite(os.path.join(args.outdir, k + '.h_planes.exr'), v)
             elif name == 'v_planes':
-                imwrite(os.path.join(args.outdir, k + '.v_planes.exr'), v)
+                imageio.v2.imwrite(os.path.join(args.outdir, k + '.v_planes.exr'), v)
             elif v.dtype == np.uint8:
-                imwrite(os.path.join(args.outdir, k + name + '.png'), v)
+                imageio.v2.imwrite(os.path.join(args.outdir, k + name + '.png'), v)
             else:
-                imwrite(os.path.join(args.outdir, k + name + '.exr'), v)
-
+                imageio.v2.imwrite(os.path.join(args.outdir, k + name + '.exr'), v)

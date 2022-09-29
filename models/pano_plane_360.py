@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 import numpy as np
-from scipy.ndimage.filters import maximum_filter
+from scipy.ndimage import maximum_filter
 
 from . import backbone
 from . import models_utils
